@@ -18,17 +18,19 @@ class NewsViewController: UIViewController, UITableViewDelegate, UITableViewData
         newsTableView.delegate = self
         fetchNews()
     }
-        
-        func fetchNews() {
-            let urlRequest = URLRequest(url: URL(string: "https://api.currentsapi.services/v1/latest-news")!)
-            let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-                if error != nil {
-                    print(error!)
-                    return
-                }
+    
+    func fetchNews() {
+        guard let url = URL(string: "https://api.currentsapi.services/v1/latest-news?apiKey=8vfqS7WiOKi0VPWlccluVY57wjJlfazNlrq1HhuimQu-bcJT") else { return }
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard let data = data, let response = response else {
+                print(error?.localizedDescription ?? "No error description")
+                return
+            }
+            print(response)
+            
                 self.news = [News]()
                 do {
-                    let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as! [String: AnyObject]
+                    let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! [String: AnyObject]
                     if let newsFromJson = json["news"] as? [[String: AnyObject]] {
                         for new in newsFromJson {
                             var news = News()
