@@ -6,10 +6,15 @@
 //
 
 import Foundation
-struct News {
-    var headLine: String?
+struct Response: Decodable {
+    let news: [News]
+}
+    
+struct News: Decodable {
+    var title: String?
     var description: String?
     var image: String?
     var url: String?
     var author: String?
 }
+
